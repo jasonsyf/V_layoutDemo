@@ -1,5 +1,7 @@
-#  Alibaba Vlayout框架测试demo
-## 可选布局样式
+ #  Alibaba Vlayout框架测试demo
+ 
+ ### 可选布局样式
+ 
  1：LinearLayoutHelper: 线性布局   
  2：GridLayoutHelper: Grid布局， 支持横向的colspan   
  3：FixLayoutHelper: 固定布局，始终在屏幕固定位置显示  
@@ -11,9 +13,12 @@
  8：OnePlusNLayoutHelper: 一拖N布局，可以配置1-5个子元素   
  9：StickyLayoutHelper: stikcy布局， 可以配置吸顶或者吸底   
  10：StaggeredGridLayoutHelper: 瀑布流布局，可配置间隔高度/宽度  
+ 
  ## app
+ 
 Github找的一个 [demo](https://github.com/Carson-Ho/VLayout-Guide) ，adapter写的比较简单，如果Item的类型比较多，或者是item  里面的控件比较复杂就不能实现。
  ## tnkgdemo
+ 
  在APP基础上封装了一个util包，拆分MyAdapter内部Viewholder，修改MyAdapter位抽象类，  增加抽象方法setListener，setData
  用于自定义的设置数据和点击事件。
  
