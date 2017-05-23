@@ -22,7 +22,13 @@ Github找的一个 [demo](https://github.com/Carson-Ho/VLayout-Guide) ，adapter
  在APP基础上封装了一个util包，拆分MyAdapter内部Viewholder，修改MyAdapter位抽象类，  增加抽象方法setListener，setData
  用于自定义的设置数据和点击事件。
  
-Tags:暂时只测试了ColumnLayoutHelper
+Tags:暂时只测试了  
+                ColumnLayoutHelper  
+               StickyLayoutHelper  
+               LinearLayoutHelper  
+               SingleLayoutHelper  
+               
+     bug：自定义的轮播图复用问题，Vlayout stickylayouthelper有Bug，老是乱晃，感觉走了个三角形？
 
 
 
