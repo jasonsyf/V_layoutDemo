@@ -20,22 +20,18 @@ import static com.jason.tndgdemo.R.id.parent;
  * Email: jason_sunyf@163.com
  */
 
-public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHolder> {
+public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHolder> implements MyItemClickListener{
     // 使用DelegateAdapter首先就是要自定义一个它的内部类Adapter，让LayoutHelper和需要绑定的数据传进去
     // 此处的Adapter和普通RecyclerView定义的Adapter只相差了一个onCreateLayoutHelper()方法，其他的都是一样的做法.
 
     //    private ArrayList<HashMap<String, Object>> listItem;
     private List<T> listItem = new ArrayList<>();
-
     // 用于存放数据列表
-
     private Context context;
     private LayoutHelper layoutHelper;
     private RecyclerView.LayoutParams layoutParams;
     private int count = 0;
     private int layoutId;
-
-    private MyItemClickListener myItemClickListener;
     // 用于设置Item点击事件
 
     public MyAdapter(List<T>  listItem, Context context,
@@ -72,7 +68,7 @@ public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHo
     // 把ViewHolder绑定Item的布局
     @Override
     public VLayoutViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VLayoutViewHolder(LayoutInflater.from(context).inflate(layoutId, parent, false),myItemClickListener);
+        return new VLayoutViewHolder(LayoutInflater.from(context).inflate(layoutId, parent, false),this);
     }
 
 
@@ -87,7 +83,7 @@ public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHo
     @Override
     public void onBindViewHolder(VLayoutViewHolder holder, int position) {
         setViewData(position, holder, listItem.get(position));
-        setListeners(holder,holder.itemView,position);
+        setListeners(holder, holder.itemView, position);
     }
 
     // 返回Item数目
@@ -98,9 +94,7 @@ public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHo
 
     // 设置Item的点击事件
     // 绑定MainActivity传进来的点击监听器
-    public void setOnItemClickListener(MyItemClickListener listener) {
-        myItemClickListener = listener;
-    }
+
     protected abstract void setViewData(int position, VLayoutViewHolder holder, T item);
     protected abstract void setListeners(VLayoutViewHolder holder, View view, int position);
 }

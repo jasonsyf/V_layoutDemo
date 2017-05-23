@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -22,7 +23,8 @@ import java.util.TimerTask;
  * Email: jason_sunyf@163.com
  */
 
-public  abstract class ScrollViewForBanner {
+public abstract class ScrollViewForBanner {
+    private ViewPagerAdapterForView mAdapterForView;
     private int i = 0;
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -54,13 +56,14 @@ public  abstract class ScrollViewForBanner {
             }
             Glide.with(context)
                     .load(urls.get(j))
-                    .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).diskCacheStrategy(DiskCacheStrategy.DATA))
+                    .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher).diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .into(img);
             views.add(img);
             int finalJ = j;
             img.setOnClickListener(v -> imagesClick(finalJ));
         }
-        initBanner(context,views);
+        initBanner(context, views);
+        mAdapterForView.upData(views);
     }
 
     private ImageView[] tips;
@@ -80,15 +83,13 @@ public  abstract class ScrollViewForBanner {
             img.setScaleType(ImageView.ScaleType.FIT_XY);
             img.setImageResource(images.get(i));
             final int finalI = i;
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    imagesClick(finalI);
-                }
-            });
+            img.setOnClickListener(v -> imagesClick(finalI));
             views.add(img);
         }
+
         initBanner(context, views);
+        mAdapterForView.upData(views);
+
     }
 
     private void initBanner(Context context, List<View> views) {
@@ -127,8 +128,8 @@ public  abstract class ScrollViewForBanner {
             params.width = 20;
             mLinearLayout.addView(img, params);
         }
-        ViewPagerAdapterForView mPagerAdapter = new ViewPagerAdapterForView(views);
-        mBanner.setAdapter(mPagerAdapter);
+        mAdapterForView = new ViewPagerAdapterForView(views);
+        mBanner.setAdapter(mAdapterForView);
     }
 
     public void adder() {

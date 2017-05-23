@@ -2,6 +2,7 @@ package com.jason.tndgdemo.VlayoutUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.jason.tndgdemo.ViewPagerAdapterForView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -100,7 +106,6 @@ public class VLayoutViewHolder extends RecyclerView.ViewHolder implements View.O
     public void onClick(View v) {
         if (mOnClickBack != null) {
             mOnClickBack.onItemClick(v,getPosition(),this);
-
         }
     }
 
@@ -169,9 +174,10 @@ public class VLayoutViewHolder extends RecyclerView.ViewHolder implements View.O
         return this;
     }
 
-//    public View getView(int viewId) {
-//
-//    }
+    public VLayoutViewHolder setBannerViewPic(int viewId, int picId) {
+
+        return this;
+    }
     public String getEdTextString(int viewId) {
         EditText editText = getView(viewId);
         editText.addTextChangedListener(new TextWatcher() {
