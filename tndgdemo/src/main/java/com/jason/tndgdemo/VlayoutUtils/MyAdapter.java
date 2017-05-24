@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.alibaba.android.vlayout.DelegateAdapter;
 import com.alibaba.android.vlayout.LayoutHelper;
-import com.jason.tndgdemo.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +31,7 @@ public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHo
     private RecyclerView.LayoutParams layoutParams;
     private int count = 0;
     private int layoutId;
+    private LayoutInflater inflater;
     // 用于设置Item点击事件
 
     public MyAdapter(List<T>  listItem, Context context,
@@ -43,6 +43,7 @@ public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHo
         this.layoutParams = layoutParams;
         this.count = count;
         this.layoutId = layoutId;
+        inflater = LayoutInflater.from(context);
     }
     //构造函数(传入每个的数据列表 & 展示的Item数量)
     public MyAdapter(List<T>  listItem, Context context,
@@ -61,14 +62,13 @@ public abstract class MyAdapter<T> extends DelegateAdapter.Adapter<VLayoutViewHo
         this.count = count;
         this.layoutParams = layoutParams;
         this.listItem = listItem;
-
-
+        inflater = LayoutInflater.from(context);
     }
 
     // 把ViewHolder绑定Item的布局
     @Override
     public VLayoutViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new VLayoutViewHolder(LayoutInflater.from(context).inflate(layoutId, parent, false),this);
+        return new VLayoutViewHolder(inflater.inflate(layoutId, parent, false),this);
     }
 
 

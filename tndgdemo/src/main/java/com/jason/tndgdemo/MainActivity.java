@@ -2,10 +2,14 @@ package com.jason.tndgdemo;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mDemoRecyclerView;
     MyAdapter<Integer> Adapter_ColumnLayout, Adapter_SingleLayout;
     MyAdapter<String> Adapter_StickyLayout, Adapter_linearLayout;
+    MyAdapter<RecyclerView> mFragmentMyAdapter;
     List<Integer> mBannerList = new ArrayList<>();
     List<Integer> mList = new ArrayList<>();
 
@@ -49,15 +54,7 @@ public class MainActivity extends AppCompatActivity {
         mBannerList.add(R.mipmap.tndg_banner1);
         mBannerList.add(R.mipmap.tndg_banner2);
         mBannerList.add(R.mipmap.tndg_banner3);
-        VirtualLayoutManager virtualLayoutManager = new VirtualLayoutManager(this);
-        DelegateAdapter mAdapter = new DelegateAdapter(virtualLayoutManager);
-        mDemoRecyclerView.setLayoutManager(virtualLayoutManager);
-        /*
-         * 设置组件复用回收池
-         */
-        RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
-        mDemoRecyclerView.setRecycledViewPool(viewPool);
-        viewPool.setMaxRecycledViews(0, 10);
+
 //         设置通栏布局
         SingleLayoutHelper singleLayoutHelper = new SingleLayoutHelper();
         // 公共属性
@@ -81,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         };
                 scrollViewForBanner.adder();
-
-
             }
 
             @Override
@@ -126,15 +121,13 @@ public class MainActivity extends AppCompatActivity {
         };
 
 //         设置吸边布局
-        StickyLayoutHelper stickyLayoutHelper = new StickyLayoutHelper();
+        StickyLayoutHelper stickyLayoutHelper = new StickyLayoutHelper(true);
         // 公共属性
-        stickyLayoutHelper.setItemCount(10);// 设置布局里Item个数
+        stickyLayoutHelper.setItemCount(1);// 设置布局里Item个数
         stickyLayoutHelper.setPadding(20, 20, 20, 20);// 设置LayoutHelper的子元素相对LayoutHelper边缘的距离
-        stickyLayoutHelper.setMargin(20, 20, 20, 20);// 设置LayoutHelper边缘相对父控件（即RecyclerView）的距离
-        stickyLayoutHelper.setBgColor(Color.GRAY);// 设置背景颜色
+        stickyLayoutHelper.setBgColor(Color.BLUE);// 设置背景颜色
         stickyLayoutHelper.setAspectRatio(6);// 设置设置布局内每行布局的宽与高的比
         // 特有属性
-        stickyLayoutHelper.setStickyStart(true);
         // true = 组件吸在顶部
         // false = 组件吸在底部
 //        stickyLayoutHelper.setOffset(100);// 设置吸边位置的偏移量
@@ -143,23 +136,23 @@ public class MainActivity extends AppCompatActivity {
             titles.add("附近的电工" + i);
         }
 
-        Adapter_StickyLayout = new MyAdapter<String>(titles, this, stickyLayoutHelper, 10, R.layout.item_sticky) {
+        Adapter_StickyLayout = new MyAdapter<String>(titles, this, stickyLayoutHelper,
+                new VirtualLayoutManager.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,50), 1 , R.layout.item_sticky) {
             @Override
             protected void setViewData(int position, VLayoutViewHolder holder, String item) {
                 holder.setText(R.id.sticky_text, item);
-            }
 
+            }
 
             @Override
             protected void setListeners(VLayoutViewHolder holder, View view, int position) {
-                view.setOnClickListener(holder);
             }
 
             @Override
             public void onItemClick(View view, int postion, RecyclerView.ViewHolder holder) {
-                Toast.makeText(MainActivity.this, "我是吸顶的布局哦", Toast.LENGTH_SHORT).show();
             }
         };
+
         LinearLayoutHelper linearLayoutHelper = new LinearLayoutHelper();
         // 公共属性
         linearLayoutHelper.setItemCount(20);// 设置布局里Item个数
@@ -198,6 +191,13 @@ public class MainActivity extends AppCompatActivity {
             }
         };
         // 1. 设置Adapter列表（同时也是设置LayoutHelper列表）
+        VirtualLayoutManager virtualLayoutManager = new VirtualLayoutManager(this);
+        DelegateAdapter mAdapter = new DelegateAdapter(virtualLayoutManager);
+        mDemoRecyclerView.setLayoutManager(virtualLayoutManager);
+//          设置组件复用回收池
+        RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
+        mDemoRecyclerView.setRecycledViewPool(viewPool);
+        viewPool.setMaxRecycledViews(0, 10);
         List<DelegateAdapter.Adapter> adapters = new LinkedList<>();
         adapters.add(Adapter_SingleLayout);
         adapters.add(Adapter_ColumnLayout);
